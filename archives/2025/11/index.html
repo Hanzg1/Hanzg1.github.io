@@ -308,7 +308,6 @@
 
 <div>
   <span id="timeDate">载入天数...</span>
-  <span id="times">载入时分秒...</span>
   <script>
   var now = new Date();
   function createtime(){
@@ -332,9 +331,8 @@
                 snum = "0" + snum;
       }
       document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
-      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
   }  //此次自定义显示内容
-  setInterval("createtime()",250);
+  setInterval("createtime()",250); 
   </script>
 </div>
   </footer>
