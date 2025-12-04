@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="@TOC  前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCAEPoro安装">
+<meta property="og:url" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="Han">
+<meta property="og:description" content="@TOC  前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;h">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/954067f18db14564a54cac826ed84d3d.png#pic_center">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/6d409db3888949c082096f0457f5947e.png#pic_center">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/fd81146942324075a083eef64fc49375.png#pic_center">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/0cccdb97a6c8489e85a049f4d01e6a84.png#pic_center">
+<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/1a2f229c0955478490d60a7faa97f198.png#pic_center">
+<meta property="article:published_time" content="2025-12-04T12:17:53.000Z">
+<meta property="article:modified_time" content="2025-12-04T12:35:55.579Z">
+<meta property="article:author" content="Han">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
+  
+  
+  
+  <title>OpenCAEPoro安装 - Han</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"NDiuiqYmSbdEM63HjVEgZ61T-gzGzoHsz","app_key":"AqRdOEQ4KY2NhWh57zgbu6BV","server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Han&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OpenCAEPoro安装"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-04 20:17" pubdate>
+          December 4, 2025
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k words
+        
+      </span>
+    
+
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OpenCAEPoro安装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>@<a href="%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95">TOC</a></p>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。</p>
+<h1 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h1><p>在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在<code>https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html</code><br>选Linux → Offline，复制给出的链接下载本地安装包，然后使用它给出的命令直接安装即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/66021d90-934d-41f4-bedf-b8c00bbe98bc/intel-oneapi-hpc-toolkit-2025.3.0.381_offline.sh<br>sh ./intel-oneapi-hpc-toolkit-2025.3.0.381_offline.sh -a --silent --cli --eula accept<br></code></pre></td></tr></table></figure>
+<p>安装后检查一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> ~/intel/oneapi/setvars.sh <span class="hljs-comment"># 激活环境</span><br><span class="hljs-built_in">which</span> icx<br></code></pre></td></tr></table></figure>
+<p>为了方便后续使用,指定ROOT_DIR的路径,写进.bashrc文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> ROOT_DIR=/home/zh/OpenCAEPoro_ASC2024-main <span class="hljs-comment"># 根据自己的目录修改</span><br></code></pre></td></tr></table></figure>
+<p>拉取仓库<a target="_blank" rel="noopener" href="https://github.com/OpenCAEPlus/OpenCAEPoro_ASC2024%E5%90%8E%EF%BC%8C%E5%B0%86%E5%85%AD%E4%B8%AA%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%85%A8%E9%83%A8%E8%A7%A3%E5%8E%8B%EF%BC%9A">https://github.com/OpenCAEPlus/OpenCAEPoro_ASC2024后，将六个压缩包全部解压：</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">tar -xzf OpenCAEPoro.tar.gz <span class="hljs-comment"># 其他五个同理</span><br></code></pre></td></tr></table></figure>
+<h1 id="二、安装Lapack"><a href="#二、安装Lapack" class="headerlink" title="二、安装Lapack"></a>二、安装Lapack</h1><p>进入lapack-3.11目录下，按照readme中命令编译lapack：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">S2. make blaslib<br>S3. make cblaslib<br>S4. make lapacklib<br>S5. make lapackelib<br></code></pre></td></tr></table></figure>
+<h1 id="三、安装parmetis"><a href="#三、安装parmetis" class="headerlink" title="三、安装parmetis"></a>三、安装parmetis</h1><p>由于MPI还是2021.17旧版，它的mpiicx脚本里硬编码写死icc&#x2F;icpc&#x2F;ifort，需要告诉 MPI 包装器：后端编译器换成 icx&#x2F;icpx&#x2F;ifx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> I_MPI_CC=icx  <span class="hljs-comment"># 写进.bashrc</span><br><span class="hljs-built_in">export</span> I_MPI_CXX=icpx<br><span class="hljs-built_in">export</span> I_MPI_FC=ifx<br></code></pre></td></tr></table></figure>
+<p>进入lapack-3.11目录下,修改build-parmetis.sh：<br><img src="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>同时修改Makefile，只需把<code>cc=mpicc</code>修改为<code>cc=mpiicx</code>，然后执行脚本即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sh build-parmetis.sh<br></code></pre></td></tr></table></figure>
+<h1 id="四、安装Hypre"><a href="#四、安装Hypre" class="headerlink" title="四、安装Hypre"></a>四、安装Hypre</h1><p>进入hypre-2.28.0目录,修改build-hypre.sh：<br><img src="https://i-blog.csdnimg.cn/direct/954067f18db14564a54cac826ed84d3d.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>注意除了修改路径外，还要禁用Fortran<code>–-disable-fortran</code>，因为旧版 Intel MPI 2021.17 的 mpiifort 包装器里硬编码调用 ifort，用<code>export I_MPI_FC=ifx</code>也不行，系统里只有 oneAPI 2025.3 的 ifx，而Hypre本身完全是C&#x2F;C++写的，fortran是方便跟用户 Fortran 程序联用，所以我就直接禁用了fortran。好像还可以用oneAPI 2021 旧版离线包（含 ifort）本地安装，但就没尝试了。</p>
+<p>然后执行脚本即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sh build-hypre.sh<br></code></pre></td></tr></table></figure>
+<h1 id="五、安装petsc"><a href="#五、安装petsc" class="headerlink" title="五、安装petsc"></a>五、安装petsc</h1><p>进入pets目录，修改build-petsc脚本，如图：<br><img src="https://i-blog.csdnimg.cn/direct/6d409db3888949c082096f0457f5947e.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>除了修改路径外，还有多了<code>--with-fc=0 \</code>来禁用fortran，以及</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-Wno-error=missing-template-arg-list-after-template-kw<br></code></pre></td></tr></table></figure>
+<p>这是由于这是 C++20 新语法检查变严格，而 PETSc 3.19 还没改，而icx 2025.3 默认开启<code>-Werror=missing-template-arg-list-after-template-kw</code>,于是给icx&#x2F;icpx 降诊断等级，让它别报这条错误。还可以用 icx 2023&#x2F;2024（默认不开启这条警告），但没有安装。</p>
+<p>这时执行脚本还是会报错：PETSc 自带的 MPI 自检例 (ex19) 在运行时找不到 InfiniBand 网卡，于是 MPI_Init 失败，程序 abort，可以执行如下命令让 MPI 回退到TCP <code>export I_MPI_OFI_PROVIDER=tcp</code>，然后再执行脚本就可以了。</p>
+<h1 id="六、安装petsc-solver"><a href="#六、安装petsc-solver" class="headerlink" title="六、安装petsc_solver"></a>六、安装petsc_solver</h1><p>进入petsc_solver，修改build-petscsolver.sh:<br><img src="https://i-blog.csdnimg.cn/direct/fd81146942324075a083eef64fc49375.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>修改 CMakeList.txt（只用改set那行的路径）:<br><img src="https://i-blog.csdnimg.cn/direct/0cccdb97a6c8489e85a049f4d01e6a84.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>执行脚本即可。</p>
+<h1 id="七、编译OpenCAEPoro"><a href="#七、编译OpenCAEPoro" class="headerlink" title="七、编译OpenCAEPoro"></a>七、编译OpenCAEPoro</h1><p>进入到 OpenCAEPoro 目录，修改mpi-build-petsc.sh：<br><img src="https://i-blog.csdnimg.cn/direct/1a2f229c0955478490d60a7faa97f198.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>执行脚本即可。</p>
+<h1 id="八、切换编译器"><a href="#八、切换编译器" class="headerlink" title="八、切换编译器"></a>八、切换编译器</h1><h2 id="切换gcc"><a href="#切换gcc" class="headerlink" title="切换gcc"></a>切换gcc</h2><p>使用 <code>./opt/rh/gcc-toolset-13/enable</code>切换gcc版本到13（gcc默认系统版本较低，不支持c++20），然后再执行：</p>
+<ul>
+<li>重新编译parmetis<br>直接按刚才方法修改编译器会报错，这是由于ParMETIS 的 Makefile 不会自动把 -lmpi 加进链接器，而我的系统 MPI 是 Intel MPI 2021.17，它的库不在默认搜索路径里，进入脚本在make那行加入<code>LDFLAGS=&quot;$LDFLAGS&quot;</code>，然后执行：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">rm</span> -rf build Makefile.inc <span class="hljs-comment"># 删除build和配置文件</span><br><span class="hljs-built_in">export</span> LDFLAGS=<span class="hljs-string">&quot;-L<span class="hljs-variable">$HOME</span>/intel/oneapi/mpi/2021.17/lib -lmpi -lmpifort -lrt -lpthread -ldl&quot;</span> <span class="hljs-comment"># 因为which mpicc显示~/intel/oneapi/mpi/2021.17/bin/mpicc</span><br>sh build-parmetis.sh<br></code></pre></td></tr></table></figure></li>
+<li>重新编译petsc<br>修改脚本中的编译器cc&#x3D;mpicc,cxx&#x3D;mpicxx即可，然后执行脚本。</li>
+<li>重新编译petsc_solver<br>同样修改脚本的编译器即可重新编译即可。</li>
+<li>重新编译OpenCAEPoro<br>同刚才两个一样。</li>
+</ul>
+<h2 id="切换nvc"><a href="#切换nvc" class="headerlink" title="切换nvc"></a>切换nvc</h2><p>   安装NVIDIA HPC SDK：<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://developer.download.nvidia.com/hpc-sdk/24.11/nvhpc_2024_2411_Linux_x86_64_cuda_12.6.tar.gz<br>tar -xzf nvhpc_2024_2411_Linux_x86_64_cuda_12.6.tar.gz<br>./install <span class="hljs-comment"># 选auto install然后指定目录</span><br></code></pre></td></tr></table></figure><br>  验证一下：<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">NVARCH=$(<span class="hljs-built_in">uname</span> -s)_$(<span class="hljs-built_in">uname</span> -m)          <span class="hljs-comment"># Linux_x86_64</span><br>NVHOME=<span class="hljs-variable">$HOME</span>/nvhpc-24.11                <span class="hljs-comment"># 你刚才的 --prefix</span><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$NVHOME</span>/<span class="hljs-variable">$NVARCH</span>/24.11/compilers/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> MANPATH=<span class="hljs-variable">$NVHOME</span>/<span class="hljs-variable">$NVARCH</span>/24.11/compilers/man:<span class="hljs-variable">$MANPATH</span><br>nvc -V<br>nvfortran -V<br></code></pre></td></tr></table></figure><br>  重新编译parmetis、petsc、petsc_solver、OpenCAEPoro，在gcc基础上改成cc&#x3D;nvc、cxx&#x3D;nvc++即可,但要把<code>-Werror=missing-template-arg-list-after-template-kw</code>,因为nvc识别不了。</p>
+<h1 id="九、修改编译选项"><a href="#九、修改编译选项" class="headerlink" title="九、修改编译选项"></a>九、修改编译选项</h1><p>可以在petsc修改编译选项，修改build-petsc脚本，然后再执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">rm</span> -rf build Makefile.inc   <span class="hljs-comment"># 切换到pets目录后</span><br>sh build-petsc.sh<br><span class="hljs-built_in">rm</span> -rf build <span class="hljs-comment"># 切换到petsc_solver后</span><br>sh build-petscsolver.sh<br><span class="hljs-built_in">rm</span> -rf build <span class="hljs-comment"># 切换到OpenCAEPoro目录后</span><br>sh mpi-build-petsc.sh<br></code></pre></td></tr></table></figure>
+<p>进入OpenCAEPoro主目录之后运行测试命令和baseline：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">mpirun -n p ./testOpenCAEPoro ./data/test/test.data <span class="hljs-comment"># 测试命令</span><br>mpirun -np p ./testOpenCAEPoro ./data/case1/case1.data verbose=1 <span class="hljs-comment"># baseline</span><br></code></pre></td></tr></table></figure>
+<p>以下测试均是<code>mpirun -np 45 ./testOpenCAEPoro ./data/case1/case1.data verbose=1</code></p>
+<ul>
+<li>icx编译选项</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>编译选项</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-O0</td>
+<td>198.353</td>
+</tr>
+<tr>
+<td>-O1</td>
+<td>171.759</td>
+</tr>
+<tr>
+<td>-O2</td>
+<td>159.783</td>
+</tr>
+<tr>
+<td>-O3</td>
+<td>167.469</td>
+</tr>
+</tbody></table>
+<ul>
+<li>gcc编译选项<br>首先测试了常见的几种，结果如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>编译选项</th>
+<th>时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-O0</td>
+<td>198.406</td>
+<td>关闭优化，调试默认</td>
+</tr>
+<tr>
+<td>-O1</td>
+<td>172.02</td>
+<td>平衡优化与编译速度</td>
+</tr>
+<tr>
+<td>-O2</td>
+<td>163.994</td>
+<td>发布版推荐，95% 场景够用</td>
+</tr>
+<tr>
+<td>-O3</td>
+<td>174.554</td>
+<td>激进优化（循环展开、向量化、内联翻倍）</td>
+</tr>
+<tr>
+<td>-Ofast</td>
+<td>174.61</td>
+<td>相当于-O3 + -ffast-math</td>
+</tr>
+</tbody></table>
+<p>  可以看到O2的时间最少，接下来以O2为基础，然后添加了三个常用选项，作用如下：<br>  <code>-march=native</code>:自动启用本机最新指令集（AVX2&#x2F;AVX-512），替代Intel的-xHost。<br>  <code>-mtune=native</code>:调度策略针对本机,但可移植性差。<br>  &#96;-flto: Link Time Optimizatio，链接时优化,生成更小、更快的代码。</p>
+<p>  时间为170.393s，有所增加，然后删除-flto，时间为166.855s，与不加-march&#x3D;native和-mtune&#x3D;native差不多。</p>
+<p>  接下来选用<code>-ffast-math</code>选项（启用激进浮点数学优化），时间为174.084s，增加较多，删掉然后再添加<code>-funroll-loops</code>（执行循环展开优化），时间为169.185s。</p>
+<ul>
+<li>nvc编译选项</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>编译选项</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-O0</td>
+<td>203.112</td>
+</tr>
+<tr>
+<td>-O1</td>
+<td>190.596</td>
+</tr>
+<tr>
+<td>-O2</td>
+<td>176.914</td>
+</tr>
+<tr>
+<td>-O3</td>
+<td>183.758</td>
+</tr>
+<tr>
+<td>-O4</td>
+<td>179.996</td>
+</tr>
+<tr>
+<td>-fast</td>
+<td>177.206</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/30/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="测试文章">
+                        <span class="hidden-mobile">测试文章</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       
+    </div>
+  
+  
+  
+</div>
+
+<div>
+  <span id="timeDate">载入天数...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("12/01/2025 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+  }  //此次自定义显示内容
+  setInterval("createtime()",250); 
+  </script>
+</div>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
