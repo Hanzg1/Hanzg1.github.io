@@ -26,17 +26,17 @@
 <meta property="og:site_name" content="Han">
 <meta property="og:description" content="前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;hpc-too">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/954067f18db14564a54cac826ed84d3d.png#pic_center">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/6d409db3888949c082096f0457f5947e.png#pic_center">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/fd81146942324075a083eef64fc49375.png#pic_center">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/0cccdb97a6c8489e85a049f4d01e6a84.png#pic_center">
-<meta property="og:image" content="https://i-blog.csdnimg.cn/direct/1a2f229c0955478490d60a7faa97f198.png#pic_center">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-parmetis.png">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-hypre.png">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-petsc.png">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-petscsolver.png">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/CMakeList.png">
+<meta property="og:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/mpi-build-petsc.png">
 <meta property="article:published_time" content="2025-12-04T12:17:53.000Z">
-<meta property="article:modified_time" content="2025-12-04T12:44:47.273Z">
+<meta property="article:modified_time" content="2025-12-04T12:52:40.241Z">
 <meta property="article:author" content="Han">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
+<meta name="twitter:image" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-parmetis.png">
   
   
   
@@ -320,21 +320,33 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">S2. make blaslib<br>S3. make cblaslib<br>S4. make lapacklib<br>S5. make lapackelib<br></code></pre></td></tr></table></figure>
 <h1 id="三、安装parmetis"><a href="#三、安装parmetis" class="headerlink" title="三、安装parmetis"></a>三、安装parmetis</h1><p>由于MPI还是2021.17旧版，它的mpiicx脚本里硬编码写死icc&#x2F;icpc&#x2F;ifort，需要告诉 MPI 包装器：后端编译器换成 icx&#x2F;icpx&#x2F;ifx：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> I_MPI_CC=icx  <span class="hljs-comment"># 写进.bashrc</span><br><span class="hljs-built_in">export</span> I_MPI_CXX=icpx<br><span class="hljs-built_in">export</span> I_MPI_FC=ifx<br></code></pre></td></tr></table></figure>
-<p>进入lapack-3.11目录下,修改build-parmetis.sh：<br><img src="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>同时修改Makefile，只需把<code>cc=mpicc</code>修改为<code>cc=mpiicx</code>，然后执行脚本即可：</p>
+<p>进入lapack-3.11目录下,修改build-parmetis.sh：</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-parmetis.png" srcset="/img/loading.gif" lazyload class="">
+<p>同时修改Makefile，只需把<code>cc=mpicc</code>修改为<code>cc=mpiicx</code>，然后执行脚本即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sh build-parmetis.sh<br></code></pre></td></tr></table></figure>
-<h1 id="四、安装Hypre"><a href="#四、安装Hypre" class="headerlink" title="四、安装Hypre"></a>四、安装Hypre</h1><p>进入hypre-2.28.0目录,修改build-hypre.sh：<br><img src="https://i-blog.csdnimg.cn/direct/954067f18db14564a54cac826ed84d3d.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="四、安装Hypre"><a href="#四、安装Hypre" class="headerlink" title="四、安装Hypre"></a>四、安装Hypre</h1><p>进入hypre-2.28.0目录,修改build-hypre.sh：</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-hypre.png" srcset="/img/loading.gif" lazyload class="">
+
 <p>注意除了修改路径外，还要禁用Fortran<code>–-disable-fortran</code>，因为旧版 Intel MPI 2021.17 的 mpiifort 包装器里硬编码调用 ifort，用<code>export I_MPI_FC=ifx</code>也不行，系统里只有 oneAPI 2025.3 的 ifx，而Hypre本身完全是C&#x2F;C++写的，fortran是方便跟用户 Fortran 程序联用，所以我就直接禁用了fortran。好像还可以用oneAPI 2021 旧版离线包（含 ifort）本地安装，但就没尝试了。</p>
 <p>然后执行脚本即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sh build-hypre.sh<br></code></pre></td></tr></table></figure>
-<h1 id="五、安装petsc"><a href="#五、安装petsc" class="headerlink" title="五、安装petsc"></a>五、安装petsc</h1><p>进入pets目录，修改build-petsc脚本，如图：<br><img src="https://i-blog.csdnimg.cn/direct/6d409db3888949c082096f0457f5947e.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="五、安装petsc"><a href="#五、安装petsc" class="headerlink" title="五、安装petsc"></a>五、安装petsc</h1><p>进入pets目录，修改build-petsc脚本，如图：</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-petsc.png" srcset="/img/loading.gif" lazyload class="">
+
 <p>除了修改路径外，还有多了<code>--with-fc=0 \</code>来禁用fortran，以及</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-Wno-error=missing-template-arg-list-after-template-kw<br></code></pre></td></tr></table></figure>
 <p>这是由于这是 C++20 新语法检查变严格，而 PETSc 3.19 还没改，而icx 2025.3 默认开启<code>-Werror=missing-template-arg-list-after-template-kw</code>,于是给icx&#x2F;icpx 降诊断等级，让它别报这条错误。还可以用 icx 2023&#x2F;2024（默认不开启这条警告），但没有安装。</p>
 <p>这时执行脚本还是会报错：PETSc 自带的 MPI 自检例 (ex19) 在运行时找不到 InfiniBand 网卡，于是 MPI_Init 失败，程序 abort，可以执行如下命令让 MPI 回退到TCP <code>export I_MPI_OFI_PROVIDER=tcp</code>，然后再执行脚本就可以了。</p>
-<h1 id="六、安装petsc-solver"><a href="#六、安装petsc-solver" class="headerlink" title="六、安装petsc_solver"></a>六、安装petsc_solver</h1><p>进入petsc_solver，修改build-petscsolver.sh:<br><img src="https://i-blog.csdnimg.cn/direct/fd81146942324075a083eef64fc49375.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>修改 CMakeList.txt（只用改set那行的路径）:<br><img src="https://i-blog.csdnimg.cn/direct/0cccdb97a6c8489e85a049f4d01e6a84.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="六、安装petsc-solver"><a href="#六、安装petsc-solver" class="headerlink" title="六、安装petsc_solver"></a>六、安装petsc_solver</h1><p>进入petsc_solver，修改build-petscsolver.sh:</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/build-petscsolver.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>修改 CMakeList.txt（只用改set那行的路径）:</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/CMakeList.png" srcset="/img/loading.gif" lazyload class="">
+
 <p>执行脚本即可。</p>
-<h1 id="七、编译OpenCAEPoro"><a href="#七、编译OpenCAEPoro" class="headerlink" title="七、编译OpenCAEPoro"></a>七、编译OpenCAEPoro</h1><p>进入到 OpenCAEPoro 目录，修改mpi-build-petsc.sh：<br><img src="https://i-blog.csdnimg.cn/direct/1a2f229c0955478490d60a7faa97f198.png#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="七、编译OpenCAEPoro"><a href="#七、编译OpenCAEPoro" class="headerlink" title="七、编译OpenCAEPoro"></a>七、编译OpenCAEPoro</h1><p>进入到 OpenCAEPoro 目录，修改mpi-build-petsc.sh：</p>
+<img src="/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/mpi-build-petsc.png" srcset="/img/loading.gif" lazyload class="">
+
 <p>执行脚本即可。</p>
 <h1 id="八、切换编译器"><a href="#八、切换编译器" class="headerlink" title="八、切换编译器"></a>八、切换编译器</h1><h2 id="切换gcc"><a href="#切换gcc" class="headerlink" title="切换gcc"></a>切换gcc</h2><p>使用 <code>./opt/rh/gcc-toolset-13/enable</code>切换gcc版本到13（gcc默认系统版本较低，不支持c++20），然后再执行：</p>
 <ul>
