@@ -19,12 +19,12 @@
   <meta name="author" content="Han">
   <meta name="keywords" content="">
   
-    <meta name="description" content="@TOC  前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;h">
+    <meta name="description" content="前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;hpc-too">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenCAEPoro安装">
 <meta property="og:url" content="http://example.com/2025/12/04/OpenCAEPoro%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="Han">
-<meta property="og:description" content="@TOC  前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;h">
+<meta property="og:description" content="前言本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。 一、准备工作在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在https:&#x2F;&#x2F;www.intel.com&#x2F;content&#x2F;www&#x2F;us&#x2F;en&#x2F;developer&#x2F;tools&#x2F;oneapi&#x2F;hpc-too">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/direct/954067f18db14564a54cac826ed84d3d.png#pic_center">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://i-blog.csdnimg.cn/direct/0cccdb97a6c8489e85a049f4d01e6a84.png#pic_center">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/direct/1a2f229c0955478490d60a7faa97f198.png#pic_center">
 <meta property="article:published_time" content="2025-12-04T12:17:53.000Z">
-<meta property="article:modified_time" content="2025-12-04T12:35:55.579Z">
+<meta property="article:modified_time" content="2025-12-04T12:44:47.273Z">
 <meta property="article:author" content="Han">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i-blog.csdnimg.cn/direct/b0dc9bc9da25464b80afbd3573189a30.png#pic_center">
@@ -307,9 +307,7 @@
             
               <div class="markdown-body">
                 
-                <p>@<a href="%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95">TOC</a></p>
-<hr>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。</p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文记录了在学校服务器（CentOS8）上安装OpenCAEPoro和切换编译器遇到的问题和解决方法。</p>
 <h1 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h1><p>在服务器上安装intel-oneapi-hpc-toolkit，其中包含icx，由于没有root权限，所以我们下载离线安装包进行本地安装，在<code>https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html</code><br>选Linux → Offline，复制给出的链接下载本地安装包，然后使用它给出的命令直接安装即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/66021d90-934d-41f4-bedf-b8c00bbe98bc/intel-oneapi-hpc-toolkit-2025.3.0.381_offline.sh<br>sh ./intel-oneapi-hpc-toolkit-2025.3.0.381_offline.sh -a --silent --cli --eula accept<br></code></pre></td></tr></table></figure>
 <p>安装后检查一下：</p>
